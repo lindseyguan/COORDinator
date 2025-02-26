@@ -1,0 +1,514 @@
+args: 
+Namespace(dataset='/data1/groups/keatinglab/fosterb/data/multichain_features', model_hparams='/home/gridsan/fbirnbaum/TERMinator-public_mirror/hparams/model/coordinator_supercloud.json', run_hparams='/home/gridsan/fbirnbaum/TERMinator-public_mirror/hparams/run/default_supercloud.json', run_dir='/data1/groups/keatinglab/fosterb/running_COORDinator_experiments/coord_mpnn_multi_node_self_sub', train='/data1/groups/keatinglab/fosterb/data/multichain_features/train.in', validation='/data1/groups/keatinglab/fosterb/data/multichain_features/validation.in', test='/data1/groups/keatinglab/fosterb/data/multichain_features/test.in', out_dir=None, dev='cuda:0', epochs=100, lazy=False, n_nodes=1, backend='nccl', msa_dataset='/data1/groups/keatinglab/fosterb/ingraham_data/ingraham_features', n_trials=1, converter_path='/home/gridsan/fbirnbaum/TERMinator/analysis/converter_model_coord.pt')
+using 1 nodes, local rank -1
+train dataset:  /data1/groups/keatinglab/fosterb/data/multichain_train.wds
+aux data:  False
+val dataset:  /data1/groups/keatinglab/fosterb/data/multichain_val.wds
+test dataset:  /data1/groups/keatinglab/fosterb/data/multichain_test.wds
+train len:  12219
+val len:  1359
+test len:  1043
+GNN Potts Model Encoder hidden dimensionality is 128
+TERMinator(
+  (top): PairEnergies(
+    (features): MultiChainProteinFeatures(
+      (embeddings): IndexDiffEncoding()
+      (dropout): Dropout(p=0.1, inplace=False)
+      (node_layers): ModuleList(
+        (0): Linear(in_features=6, out_features=128, bias=False)
+      )
+      (edge_layers): ModuleList(
+        (0): Linear(in_features=416, out_features=128, bias=False)
+      )
+      (node_embedding): Linear(in_features=128, out_features=128, bias=False)
+      (edge_embedding): Linear(in_features=128, out_features=128, bias=False)
+      (norm_nodes): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+      (norm_edges): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+      (E_feats): ProteinMPNNFeatures(
+        (embeddings): PositionalEncodings(
+          (linear): Linear(in_features=66, out_features=16, bias=True)
+        )
+        (edge_embedding): Linear(in_features=416, out_features=128, bias=False)
+        (norm_edges): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (node_embedding): Linear(in_features=6, out_features=128, bias=True)
+        (norm_nodes): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+    (W_v): Linear(in_features=128, out_features=128, bias=True)
+    (W_e): Linear(in_features=128, out_features=128, bias=True)
+    (edge_encoder): ModuleList(
+      (0): EdgeMPNNLayer(
+        (dropout): Dropout(p=0.1, inplace=False)
+        (norm): ModuleList(
+          (0): Normalize()
+          (1): Normalize()
+        )
+        (W1): Linear(in_features=384, out_features=128, bias=True)
+        (W2): Linear(in_features=128, out_features=128, bias=True)
+        (W3): Linear(in_features=128, out_features=128, bias=True)
+        (dense): PositionWiseFeedForward(
+          (W_in): Linear(in_features=128, out_features=512, bias=True)
+          (W_out): Linear(in_features=512, out_features=128, bias=True)
+          (act): GELU()
+        )
+      )
+      (1): EdgeMPNNLayer(
+        (dropout): Dropout(p=0.1, inplace=False)
+        (norm): ModuleList(
+          (0): Normalize()
+          (1): Normalize()
+        )
+        (W1): Linear(in_features=384, out_features=128, bias=True)
+        (W2): Linear(in_features=128, out_features=128, bias=True)
+        (W3): Linear(in_features=128, out_features=128, bias=True)
+        (dense): PositionWiseFeedForward(
+          (W_in): Linear(in_features=128, out_features=512, bias=True)
+          (W_out): Linear(in_features=512, out_features=128, bias=True)
+          (act): GELU()
+        )
+      )
+      (2): EdgeMPNNLayer(
+        (dropout): Dropout(p=0.1, inplace=False)
+        (norm): ModuleList(
+          (0): Normalize()
+          (1): Normalize()
+        )
+        (W1): Linear(in_features=384, out_features=128, bias=True)
+        (W2): Linear(in_features=128, out_features=128, bias=True)
+        (W3): Linear(in_features=128, out_features=128, bias=True)
+        (dense): PositionWiseFeedForward(
+          (W_in): Linear(in_features=128, out_features=512, bias=True)
+          (W_out): Linear(in_features=512, out_features=128, bias=True)
+          (act): GELU()
+        )
+      )
+      (3): EdgeMPNNLayer(
+        (dropout): Dropout(p=0.1, inplace=False)
+        (norm): ModuleList(
+          (0): Normalize()
+          (1): Normalize()
+        )
+        (W1): Linear(in_features=384, out_features=128, bias=True)
+        (W2): Linear(in_features=128, out_features=128, bias=True)
+        (W3): Linear(in_features=128, out_features=128, bias=True)
+        (dense): PositionWiseFeedForward(
+          (W_in): Linear(in_features=128, out_features=512, bias=True)
+          (W_out): Linear(in_features=512, out_features=128, bias=True)
+          (act): GELU()
+        )
+      )
+      (4): EdgeMPNNLayer(
+        (dropout): Dropout(p=0.1, inplace=False)
+        (norm): ModuleList(
+          (0): Normalize()
+          (1): Normalize()
+        )
+        (W1): Linear(in_features=384, out_features=128, bias=True)
+        (W2): Linear(in_features=128, out_features=128, bias=True)
+        (W3): Linear(in_features=128, out_features=128, bias=True)
+        (dense): PositionWiseFeedForward(
+          (W_in): Linear(in_features=128, out_features=512, bias=True)
+          (W_out): Linear(in_features=512, out_features=128, bias=True)
+          (act): GELU()
+        )
+      )
+      (5): EdgeMPNNLayer(
+        (dropout): Dropout(p=0.1, inplace=False)
+        (norm): ModuleList(
+          (0): Normalize()
+          (1): Normalize()
+        )
+        (W1): Linear(in_features=384, out_features=128, bias=True)
+        (W2): Linear(in_features=128, out_features=128, bias=True)
+        (W3): Linear(in_features=128, out_features=128, bias=True)
+        (dense): PositionWiseFeedForward(
+          (W_in): Linear(in_features=128, out_features=512, bias=True)
+          (W_out): Linear(in_features=512, out_features=128, bias=True)
+          (act): GELU()
+        )
+      )
+      (6): EdgeMPNNLayer(
+        (dropout): Dropout(p=0.1, inplace=False)
+        (norm): ModuleList(
+          (0): Normalize()
+          (1): Normalize()
+        )
+        (W1): Linear(in_features=384, out_features=128, bias=True)
+        (W2): Linear(in_features=128, out_features=128, bias=True)
+        (W3): Linear(in_features=128, out_features=128, bias=True)
+        (dense): PositionWiseFeedForward(
+          (W_in): Linear(in_features=128, out_features=512, bias=True)
+          (W_out): Linear(in_features=512, out_features=128, bias=True)
+          (act): GELU()
+        )
+      )
+      (7): EdgeMPNNLayer(
+        (dropout): Dropout(p=0.1, inplace=False)
+        (norm): ModuleList(
+          (0): Normalize()
+          (1): Normalize()
+        )
+        (W1): Linear(in_features=384, out_features=128, bias=True)
+        (W2): Linear(in_features=128, out_features=128, bias=True)
+        (W3): Linear(in_features=128, out_features=128, bias=True)
+        (dense): PositionWiseFeedForward(
+          (W_in): Linear(in_features=128, out_features=512, bias=True)
+          (W_out): Linear(in_features=512, out_features=128, bias=True)
+          (act): GELU()
+        )
+      )
+      (8): EdgeMPNNLayer(
+        (dropout): Dropout(p=0.1, inplace=False)
+        (norm): ModuleList(
+          (0): Normalize()
+          (1): Normalize()
+        )
+        (W1): Linear(in_features=384, out_features=128, bias=True)
+        (W2): Linear(in_features=128, out_features=128, bias=True)
+        (W3): Linear(in_features=128, out_features=128, bias=True)
+        (dense): PositionWiseFeedForward(
+          (W_in): Linear(in_features=128, out_features=512, bias=True)
+          (W_out): Linear(in_features=512, out_features=128, bias=True)
+          (act): GELU()
+        )
+      )
+      (9): EdgeMPNNLayer(
+        (dropout): Dropout(p=0.1, inplace=False)
+        (norm): ModuleList(
+          (0): Normalize()
+          (1): Normalize()
+        )
+        (W1): Linear(in_features=384, out_features=128, bias=True)
+        (W2): Linear(in_features=128, out_features=128, bias=True)
+        (W3): Linear(in_features=128, out_features=128, bias=True)
+        (dense): PositionWiseFeedForward(
+          (W_in): Linear(in_features=128, out_features=512, bias=True)
+          (W_out): Linear(in_features=512, out_features=128, bias=True)
+          (act): GELU()
+        )
+      )
+    )
+    (node_encoder): ModuleList(
+      (0): NodeMPNNLayer(
+        (dropout): Dropout(p=0.1, inplace=False)
+        (norm): ModuleList(
+          (0): Normalize()
+          (1): Normalize()
+        )
+        (W1): Linear(in_features=384, out_features=128, bias=True)
+        (W2): Linear(in_features=128, out_features=128, bias=True)
+        (W3): Linear(in_features=128, out_features=128, bias=True)
+        (dense): PositionWiseFeedForward(
+          (W_in): Linear(in_features=128, out_features=512, bias=True)
+          (W_out): Linear(in_features=512, out_features=128, bias=True)
+          (act): GELU()
+        )
+      )
+      (1): NodeMPNNLayer(
+        (dropout): Dropout(p=0.1, inplace=False)
+        (norm): ModuleList(
+          (0): Normalize()
+          (1): Normalize()
+        )
+        (W1): Linear(in_features=384, out_features=128, bias=True)
+        (W2): Linear(in_features=128, out_features=128, bias=True)
+        (W3): Linear(in_features=128, out_features=128, bias=True)
+        (dense): PositionWiseFeedForward(
+          (W_in): Linear(in_features=128, out_features=512, bias=True)
+          (W_out): Linear(in_features=512, out_features=128, bias=True)
+          (act): GELU()
+        )
+      )
+      (2): NodeMPNNLayer(
+        (dropout): Dropout(p=0.1, inplace=False)
+        (norm): ModuleList(
+          (0): Normalize()
+          (1): Normalize()
+        )
+        (W1): Linear(in_features=384, out_features=128, bias=True)
+        (W2): Linear(in_features=128, out_features=128, bias=True)
+        (W3): Linear(in_features=128, out_features=128, bias=True)
+        (dense): PositionWiseFeedForward(
+          (W_in): Linear(in_features=128, out_features=512, bias=True)
+          (W_out): Linear(in_features=512, out_features=128, bias=True)
+          (act): GELU()
+        )
+      )
+      (3): NodeMPNNLayer(
+        (dropout): Dropout(p=0.1, inplace=False)
+        (norm): ModuleList(
+          (0): Normalize()
+          (1): Normalize()
+        )
+        (W1): Linear(in_features=384, out_features=128, bias=True)
+        (W2): Linear(in_features=128, out_features=128, bias=True)
+        (W3): Linear(in_features=128, out_features=128, bias=True)
+        (dense): PositionWiseFeedForward(
+          (W_in): Linear(in_features=128, out_features=512, bias=True)
+          (W_out): Linear(in_features=512, out_features=128, bias=True)
+          (act): GELU()
+        )
+      )
+      (4): NodeMPNNLayer(
+        (dropout): Dropout(p=0.1, inplace=False)
+        (norm): ModuleList(
+          (0): Normalize()
+          (1): Normalize()
+        )
+        (W1): Linear(in_features=384, out_features=128, bias=True)
+        (W2): Linear(in_features=128, out_features=128, bias=True)
+        (W3): Linear(in_features=128, out_features=128, bias=True)
+        (dense): PositionWiseFeedForward(
+          (W_in): Linear(in_features=128, out_features=512, bias=True)
+          (W_out): Linear(in_features=512, out_features=128, bias=True)
+          (act): GELU()
+        )
+      )
+      (5): NodeMPNNLayer(
+        (dropout): Dropout(p=0.1, inplace=False)
+        (norm): ModuleList(
+          (0): Normalize()
+          (1): Normalize()
+        )
+        (W1): Linear(in_features=384, out_features=128, bias=True)
+        (W2): Linear(in_features=128, out_features=128, bias=True)
+        (W3): Linear(in_features=128, out_features=128, bias=True)
+        (dense): PositionWiseFeedForward(
+          (W_in): Linear(in_features=128, out_features=512, bias=True)
+          (W_out): Linear(in_features=512, out_features=128, bias=True)
+          (act): GELU()
+        )
+      )
+      (6): NodeMPNNLayer(
+        (dropout): Dropout(p=0.1, inplace=False)
+        (norm): ModuleList(
+          (0): Normalize()
+          (1): Normalize()
+        )
+        (W1): Linear(in_features=384, out_features=128, bias=True)
+        (W2): Linear(in_features=128, out_features=128, bias=True)
+        (W3): Linear(in_features=128, out_features=128, bias=True)
+        (dense): PositionWiseFeedForward(
+          (W_in): Linear(in_features=128, out_features=512, bias=True)
+          (W_out): Linear(in_features=512, out_features=128, bias=True)
+          (act): GELU()
+        )
+      )
+      (7): NodeMPNNLayer(
+        (dropout): Dropout(p=0.1, inplace=False)
+        (norm): ModuleList(
+          (0): Normalize()
+          (1): Normalize()
+        )
+        (W1): Linear(in_features=384, out_features=128, bias=True)
+        (W2): Linear(in_features=128, out_features=128, bias=True)
+        (W3): Linear(in_features=128, out_features=128, bias=True)
+        (dense): PositionWiseFeedForward(
+          (W_in): Linear(in_features=128, out_features=512, bias=True)
+          (W_out): Linear(in_features=512, out_features=128, bias=True)
+          (act): GELU()
+        )
+      )
+      (8): NodeMPNNLayer(
+        (dropout): Dropout(p=0.1, inplace=False)
+        (norm): ModuleList(
+          (0): Normalize()
+          (1): Normalize()
+        )
+        (W1): Linear(in_features=384, out_features=128, bias=True)
+        (W2): Linear(in_features=128, out_features=128, bias=True)
+        (W3): Linear(in_features=128, out_features=128, bias=True)
+        (dense): PositionWiseFeedForward(
+          (W_in): Linear(in_features=128, out_features=512, bias=True)
+          (W_out): Linear(in_features=512, out_features=128, bias=True)
+          (act): GELU()
+        )
+      )
+      (9): NodeMPNNLayer(
+        (dropout): Dropout(p=0.1, inplace=False)
+        (norm): ModuleList(
+          (0): Normalize()
+          (1): Normalize()
+        )
+        (W1): Linear(in_features=384, out_features=128, bias=True)
+        (W2): Linear(in_features=128, out_features=128, bias=True)
+        (W3): Linear(in_features=128, out_features=128, bias=True)
+        (dense): PositionWiseFeedForward(
+          (W_in): Linear(in_features=128, out_features=512, bias=True)
+          (W_out): Linear(in_features=512, out_features=128, bias=True)
+          (act): GELU()
+        )
+      )
+    )
+    (W_proj): Linear(in_features=128, out_features=20, bias=True)
+    (W_out): Linear(in_features=128, out_features=400, bias=True)
+    (dec_out): Linear(in_features=128, out_features=20, bias=True)
+    (W_dropout): Dropout(p=0, inplace=False)
+  )
+)
+terminator hparams {'cov_features': 'all_raw', 'cov_compress': 'project', 'term_use_mpnn': True, 'matches': 'transformer', 'energies_use_mpnn': True, 'energies_full_graph': True, 'contact_idx': True, 'energies_encoder_layers': 10, 'energies_hidden_dim': 128, 'resnet_linear': True, 'side_chain': True, 'matches_linear': True, 'transformer_linear': True, 'term_mpnn_linear': True, 'use_terms': False, 'res_embed_linear': True, 'edge_merge_fn': 'default', 'model': 'multichain', 'term_hidden_dim': 32, 'flex_hidden_dim': 1, 'msa_type': '', 'condense_options': '', 'gradient_checkpointing': True, 'num_pair_stats': 28, 'num_sing_stats': 0, 'resnet_blocks': 4, 'term_layers': 4, 'flex_layers': 4, 'term_heads': 4, 'conv_filter': 3, 'matches_layers': 4, 'matches_num_heads': 4, 'k_neighbors': 30, 'k_cutoff': None, 'cie_dropout': 0.1, 'cie_scaling': 500, 'cie_offset': 0, 'transformer_dropout': 0.1, 'energies_protein_features': 'full_mpnn', 'esm_feats': False, 'energies_augment_eps': 0, 'energies_dropout': 0.1, 'energies_output_dim': 400, 'energies_gvp': False, 'energies_graphformer': False, 'energies_geometric': False, 'struct2seq_linear': False, 'use_flex': False, 'use_coords': True, 'num_features': 9, 'chain_handle': '', 'test_code': '', 'edge_update': '', 'edge_update_k': 0, 'energies_graph_type': 'undirected', 'loss_graph_type': 'undirected', 'activation_layers': 'relu', 'voxel_max': 15, 'voxel_size': 16, 'voxel_width': 2, 'interaction_mlp_layers': 3, 'interaction_mlp_in': [], 'interaction_mlp_out': [], 'mlp_dropout': 0, 'skip_attention': False, 'kernel_width': 0, 'kernel_sigma': 1, 'masking': '', 'neighborhood_multiplier': 2, 'graphformer_num_heads': 4, 'graphformer_num_layers': 3, 'graphformer_mlp_multiplier': 1, 'graphformer_edge_type': 'basic', 'graphformer_dropout': 0, 'num_positional_embeddings': 16, 'featurizer': 'multichain', 'nonlinear_features': True, 'energy_merge_fn': 'default', 'esm_rep_feat_ins': [640], 'esm_rep_feat_outs': [32], 'rla_feats': False, 'esm_embed_layer': 30, 'esm_embed_dim': 640, 'esm_attn_feat_ins': [600], 'esm_attn_feat_outs': [20], 'esm_model': 150, 'convert_to_esm': False, 'old': False, 'use_edges_for_nodes': True, 'one_hot': False, 'nodes_to_probs': False, 'side_chain_graph': False, 'sc_dropout': 0.2, 'mpnn_decoder': False, 'num_decoder_layers': 0, 'edges_to_seq': False, 'mpnn_dihedrals': False, 'ener_finetune_mlp': False, 'sc_hidden_dim': 128, 'teacher_forcing': True, 'esm_dropout': 0.0, 'bias': False, 'zero_node_features': False, 'zero_edge_features': False, 'pifold_decoder': True, 'predict_confidence': False, 'predict_blosum': False, 'restrict_pifold_output': True, 'random_type': '', 'confidence_vector_dim': 1, 'confidence_vector': False, 'node_self_sub': True, 'nodes_output_dim': 22, 'struct_predict': False, 'post_esm_module': False, 'use_transfer_model': False, 'transfer_model': None, 'esm_once': False, 'use_pepmlm': False, 'esm_module': False, 'esm_module_only': False, 'transfer_hidden_dim': 484, 'from_pepmlm': False, 'multimer_structure_module': False, 'mult_etabs': True, 'single_etab_dense': False, 'transfer_use_light_attn': True, 'transfer_num_linear': 2, 'transfer_use_out': True, 'transfer_use_esm': False, 'struct_dropout': 0, 'struct_node_dropout': 0, 'struct_edge_dropout': 0, 'load_etab_dir': '', 'distill_checkpoint': '', 'distill_model_hparams': '', 'distill_run_hparams': '', 'struct_predict_pairs': True, 'struct_predict_seq': True, 'fe_dropout': 0.1, 'fe_max_len': 1000, 'ft_dropout': 0, 'energies_input_dim': 0}
+epoch 0
+epoch loss 9.416263038758768 epoch_ld {'nlcpl': {'loss': 6.529430582395674, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.8868324563630936, 'nsr': 0.14510118111893813, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 7.310027043375572 val ld {'nlcpl': {'loss': 4.688043320328107, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.6219837230474656, 'nsr': 0.22258341308844887, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  1000000000.0
+epoch 1
+epoch loss 7.080926866152742 epoch_ld {'nlcpl': {'loss': 4.56271581880508, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.5182110473476627, 'nsr': 0.2576824546267022, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 6.746846867274326 val ld {'nlcpl': {'loss': 4.306875561860838, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.439971305413488, 'nsr': 0.277566758388101, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  7.310027043375572
+epoch 2
+epoch loss 6.476782659045478 epoch_ld {'nlcpl': {'loss': 4.1152977292377155, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.3614849298077627, 'nsr': 0.31165870431429726, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 6.236424942592034 val ld {'nlcpl': {'loss': 3.9305392967768675, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.3058856458151666, 'nsr': 0.33006323336173365, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  6.746846867274326
+epoch 3
+epoch loss 6.017883336069572 epoch_ld {'nlcpl': {'loss': 3.7639534049366246, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.2539299311329475, 'nsr': 0.34899292712039615, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 5.7603136593142885 val ld {'nlcpl': {'loss': 3.5646049793017447, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.195708680012544, 'nsr': 0.3679094433433611, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  6.236424942592034
+epoch 4
+epoch loss 5.668620911132679 epoch_ld {'nlcpl': {'loss': 3.4947410016768283, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.1738799094558505, 'nsr': 0.37683150354544914, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 5.656979208311849 val ld {'nlcpl': {'loss': 3.4983529482280797, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.158626260083769, 'nsr': 0.38085752592104777, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  5.7603136593142885
+epoch 5
+epoch loss 5.435202043693258 epoch_ld {'nlcpl': {'loss': 3.3163914190316053, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.118810624661653, 'nsr': 0.39637834803658245, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 5.421255680679661 val ld {'nlcpl': {'loss': 3.31630607432877, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.1049496063508912, 'nsr': 0.4004021478300151, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  5.656979208311849
+epoch 6
+epoch loss 5.257635520671403 epoch_ld {'nlcpl': {'loss': 3.1825195513804854, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.0751159692909176, 'nsr': 0.4126149306113218, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 5.22444412816176 val ld {'nlcpl': {'loss': 3.165964761975059, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.058479366186702, 'nsr': 0.4177201529190416, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  5.421255680679661
+epoch 7
+epoch loss 5.124620648473501 epoch_ld {'nlcpl': {'loss': 3.0816602949798106, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.0429603534936907, 'nsr': 0.42473659727722407, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 5.103528806880785 val ld {'nlcpl': {'loss': 3.0808962319509523, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.0226325749298333, 'nsr': 0.42914138612631403, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  5.22444412816176
+epoch 8
+epoch loss 5.02878827708108 epoch_ld {'nlcpl': {'loss': 3.011363729647825, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.0174245474332557, 'nsr': 0.4343655807407279, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 5.074160738628168 val ld {'nlcpl': {'loss': 3.05968221182153, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.0144785268066383, 'nsr': 0.4335388978552608, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  5.103528806880785
+epoch 9
+epoch loss 4.975728527230411 epoch_ld {'nlcpl': {'loss': 2.9737718247655613, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.001956702464849, 'nsr': 0.44038877313706415, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 5.182187724323988 val ld {'nlcpl': {'loss': 3.1362841895961693, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.0459035347278194, 'nsr': 0.4260124391036669, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  5.074160738628168
+epoch 10
+epoch loss 4.8935033960330525 epoch_ld {'nlcpl': {'loss': 2.9140071643245027, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.9794962317085503, 'nsr': 0.44851482560299105, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.955146343722073 val ld {'nlcpl': {'loss': 2.972702863069033, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.98244348065304, 'nsr': 0.44668491482405737, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  5.074160738628168
+epoch 11
+epoch loss 4.778845578209678 epoch_ld {'nlcpl': {'loss': 2.82956865022135, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.9492769279883275, 'nsr': 0.45937711497147876, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.93133224920809 val ld {'nlcpl': {'loss': 2.960552940875665, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.970779308332425, 'nsr': 0.4501484835066718, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.955146343722073
+epoch 12
+epoch loss 4.674182118023213 epoch_ld {'nlcpl': {'loss': 2.7523268394505798, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.9218552785726328, 'nsr': 0.46915287324296895, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.8391893111098065 val ld {'nlcpl': {'loss': 2.8954971690358615, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.943692142073945, 'nsr': 0.4607869865396077, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.93133224920809
+epoch 13
+epoch loss 4.5754735864708165 epoch_ld {'nlcpl': {'loss': 2.6795326631660035, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8959409233048132, 'nsr': 0.47884097454111424, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.806338577980149 val ld {'nlcpl': {'loss': 2.880850689848878, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.9254878881312716, 'nsr': 0.466262105021782, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.8391893111098065
+epoch 14
+epoch loss 4.487874715072874 epoch_ld {'nlcpl': {'loss': 2.6138590221684126, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8740156929044616, 'nsr': 0.4866708539713958, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.752133431221476 val ld {'nlcpl': {'loss': 2.8375872074680526, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.9145462237534232, 'nsr': 0.47135941138199094, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.806338577980149
+epoch 15
+epoch loss 4.416386428835383 epoch_ld {'nlcpl': {'loss': 2.5609351862709073, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8554512425644758, 'nsr': 0.49364167236598905, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.666256666183472 val ld {'nlcpl': {'loss': 2.7774392893596813, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8888173768237901, 'nsr': 0.48052724298415944, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.752133431221476
+epoch 16
+epoch loss 4.345590624023466 epoch_ld {'nlcpl': {'loss': 2.5077339253026745, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8378566987207916, 'nsr': 0.5001053952992186, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.624383266288801 val ld {'nlcpl': {'loss': 2.7456519009656466, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8787313653231543, 'nsr': 0.48419957888135146, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.666256666183472
+epoch 17
+epoch loss 4.2881941895307225 epoch_ld {'nlcpl': {'loss': 2.4653187859132424, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8228754036174797, 'nsr': 0.5055584932336156, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.635343025106117 val ld {'nlcpl': {'loss': 2.757673590827111, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8776694342790061, 'nsr': 0.48570485424039295, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.624383266288801
+epoch 18
+epoch loss 4.22171322242409 epoch_ld {'nlcpl': {'loss': 2.4155946046596446, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8061186177644457, 'nsr': 0.5117365938343413, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.628518449242629 val ld {'nlcpl': {'loss': 2.760467562322848, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.868050886919781, 'nsr': 0.49023220649727833, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.624383266288801
+epoch 19
+epoch loss 4.1663335671745925 epoch_ld {'nlcpl': {'loss': 2.373728360915719, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.7926052062588738, 'nsr': 0.5170100811785296, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.627167751172433 val ld {'nlcpl': {'loss': 2.760172933690946, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8669948174814865, 'nsr': 0.4905571551161535, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.624383266288801
+epoch 20
+epoch loss 4.117187064856365 epoch_ld {'nlcpl': {'loss': 2.336447562734385, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.78073950212198, 'nsr': 0.5215931129723118, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.584098752980025 val ld {'nlcpl': {'loss': 2.725809574960522, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8582891780195032, 'nsr': 0.49209937272899024, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.624383266288801
+epoch 21
+epoch loss 4.0679205793543645 epoch_ld {'nlcpl': {'loss': 2.2999493568169505, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.767971222537414, 'nsr': 0.5260634175559826, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.584241877218833 val ld {'nlcpl': {'loss': 2.727117192732051, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8571246844867821, 'nsr': 0.4928270207664561, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.584098752980025
+epoch 22
+epoch loss 4.019894683137536 epoch_ld {'nlcpl': {'loss': 2.2636549580842256, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.7562397250533104, 'nsr': 0.5306751174852252, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.687416064226074 val ld {'nlcpl': {'loss': 2.8122358751305767, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8751801890954978, 'nsr': 0.49291114194964203, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.584098752980025
+epoch 23
+epoch loss 3.9792554234137127 epoch_ld {'nlcpl': {'loss': 2.2326253109598815, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.7466301124538313, 'nsr': 0.5343425341442246, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.535836744694432 val ld {'nlcpl': {'loss': 2.695914208362697, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8399225363317353, 'nsr': 0.4998557163653258, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.584098752980025
+epoch 24
+epoch loss 3.9354171455647813 epoch_ld {'nlcpl': {'loss': 2.1998844733878746, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.7355326721769067, 'nsr': 0.5384627780066201, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.5245649725132955 val ld {'nlcpl': {'loss': 2.6900649979063656, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8344999746069302, 'nsr': 0.5022254717687722, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.535836744694432
+epoch 25
+epoch loss 3.8949489842660676 epoch_ld {'nlcpl': {'loss': 2.1687852720666374, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.7261637121994302, 'nsr': 0.5419414167078386, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.502926464200108 val ld {'nlcpl': {'loss': 2.671288797353628, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8316376668464796, 'nsr': 0.5020477662714112, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.5245649725132955
+epoch 26
+epoch loss 3.860850634417528 epoch_ld {'nlcpl': {'loss': 2.143292757004017, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.717557877413511, 'nsr': 0.5455014971021104, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.536396734279425 val ld {'nlcpl': {'loss': 2.703491779922825, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8329049543565998, 'nsr': 0.5026739733053798, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.502926464200108
+epoch 27
+epoch loss 3.8220677868778195 epoch_ld {'nlcpl': {'loss': 2.1141949647598053, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.707872822118014, 'nsr': 0.5490979667236743, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.6103406166267185 val ld {'nlcpl': {'loss': 2.7641383571559843, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8462022594707341, 'nsr': 0.5032034339746454, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.502926464200108
+epoch 28
+epoch loss 3.787810786966946 epoch_ld {'nlcpl': {'loss': 2.088407591207152, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6994031957597946, 'nsr': 0.5528844927735719, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.54794399228668 val ld {'nlcpl': {'loss': 2.7138167627161263, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.834127229570553, 'nsr': 0.5035092721284093, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.502926464200108
+epoch 29
+epoch loss 3.7520788452835294 epoch_ld {'nlcpl': {'loss': 2.0612537873072303, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6908250579762991, 'nsr': 0.5558382277527163, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.525348446786272 val ld {'nlcpl': {'loss': 2.698980512504546, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.826367934281726, 'nsr': 0.5047928558565221, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.502926464200108
+epoch 30
+epoch loss 3.7273726912026994 epoch_ld {'nlcpl': {'loss': 2.0427589707457914, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.684613720456908, 'nsr': 0.5582781505495421, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.5472371148615744 val ld {'nlcpl': {'loss': 2.7176538624467, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8295832524148745, 'nsr': 0.5057810549024627, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.502926464200108
+epoch 31
+epoch loss 3.6956656828522685 epoch_ld {'nlcpl': {'loss': 2.0182847280800345, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.677380954772234, 'nsr': 0.5609012426063419, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.492318020400271 val ld {'nlcpl': {'loss': 2.66956981387184, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8227482065284313, 'nsr': 0.5053361435424237, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.502926464200108
+epoch 32
+epoch loss 3.667605120010507 epoch_ld {'nlcpl': {'loss': 1.9974360172810994, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6701691027294074, 'nsr': 0.5639695774884592, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.4909021741243915 val ld {'nlcpl': {'loss': 2.6732216172134113, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8176805569109802, 'nsr': 0.5097624443367266, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.492318020400271
+epoch 33
+epoch loss 3.6368154616498236 epoch_ld {'nlcpl': {'loss': 1.9737530329927284, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6630624286570952, 'nsr': 0.5667093262372919, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.536592012012242 val ld {'nlcpl': {'loss': 2.7134323733049426, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8231596387072992, 'nsr': 0.5075471691233521, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.4909021741243915
+epoch 34
+epoch loss 3.613226036887217 epoch_ld {'nlcpl': {'loss': 1.9560604811532243, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6571655557339924, 'nsr': 0.5689488013189035, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.510061794098377 val ld {'nlcpl': {'loss': 2.6939766259865343, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.816085168111842, 'nsr': 0.510566615768879, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.4909021741243915
+epoch 35
+epoch loss 3.578304489391931 epoch_ld {'nlcpl': {'loss': 1.9298547991684505, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6484496902234806, 'nsr': 0.5721525850133126, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.527611651277613 val ld {'nlcpl': {'loss': 2.706840407001876, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8207712442757367, 'nsr': 0.5107776797469089, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.4909021741243915
+epoch 36
+epoch loss 3.5587185300914537 epoch_ld {'nlcpl': {'loss': 1.915046364068985, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6436721660224687, 'nsr': 0.5740668448095166, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.563055757764861 val ld {'nlcpl': {'loss': 2.7387932731308773, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8242624846339839, 'nsr': 0.5099299418917467, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.4909021741243915
+epoch 37
+epoch loss 3.531752752761046 epoch_ld {'nlcpl': {'loss': 1.8944808055289941, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6372719472320518, 'nsr': 0.5762809570230062, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.479923634679551 val ld {'nlcpl': {'loss': 2.6708350734095787, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.809088561269972, 'nsr': 0.5134771890538067, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.4909021741243915
+epoch 38
+epoch loss 3.5099297267562277 epoch_ld {'nlcpl': {'loss': 1.878193935302839, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6317357914533888, 'nsr': 0.5786962578557941, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.520026818016507 val ld {'nlcpl': {'loss': 2.708381243801187, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.81164557421532, 'nsr': 0.5115893168801152, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.479923634679551
+epoch 39
+epoch loss 3.482777321942855 epoch_ld {'nlcpl': {'loss': 1.8572050782096623, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6255722437331925, 'nsr': 0.5810258733988994, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.514581380914993 val ld {'nlcpl': {'loss': 2.700361942394066, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.814219438520927, 'nsr': 0.5129569873729114, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.479923634679551
+epoch 40
+epoch loss 3.4624891123231154 epoch_ld {'nlcpl': {'loss': 1.8421969853387856, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6202921269843298, 'nsr': 0.5832188175331732, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.484868195256036 val ld {'nlcpl': {'loss': 2.6782061924953684, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8066620027606675, 'nsr': 0.5126159742989902, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.479923634679551
+epoch 41
+epoch loss 3.4439460283026713 epoch_ld {'nlcpl': {'loss': 1.828081184837702, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6158648434649692, 'nsr': 0.5847646553120512, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.545192907791177 val ld {'nlcpl': {'loss': 2.73247730928234, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8127155985088363, 'nsr': 0.5139703074630523, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.479923634679551
+epoch 42
+epoch loss 3.4160829818722034 epoch_ld {'nlcpl': {'loss': 1.8069736430278192, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6091093388443845, 'nsr': 0.5877780433993778, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.495195778318413 val ld {'nlcpl': {'loss': 2.691307735726007, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8038880425924058, 'nsr': 0.5149849405768516, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.479923634679551
+epoch 43
+epoch loss 3.4015976253181623 epoch_ld {'nlcpl': {'loss': 1.7959109606625434, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.605686664655619, 'nsr': 0.5888741045372742, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.499933852133635 val ld {'nlcpl': {'loss': 2.6926471637925125, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8072866883411225, 'nsr': 0.5154595399128767, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.479923634679551
+epoch 44
+epoch loss 3.37805113802081 epoch_ld {'nlcpl': {'loss': 1.7783675627443856, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.5996835752764247, 'nsr': 0.5913178698900632, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.548247980821475 val ld {'nlcpl': {'loss': 2.735704872803797, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.812543108017678, 'nsr': 0.5136592990339811, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.479923634679551
+epoch 45
+epoch loss 3.3619675400094216 epoch_ld {'nlcpl': {'loss': 1.765947794099772, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.5960197459096495, 'nsr': 0.5925453618816707, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.560420866389543 val ld {'nlcpl': {'loss': 2.747048199609898, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.813372666779645, 'nsr': 0.5149740422085597, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.479923634679551
+epoch 46
+epoch loss 3.3435995855845917 epoch_ld {'nlcpl': {'loss': 1.751873684667088, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.591725900917504, 'nsr': 0.5943086745578852, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.5667556696753016 val ld {'nlcpl': {'loss': 2.7508964268949825, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.815859242780319, 'nsr': 0.5130272250652664, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.479923634679551
+epoch 47
+epoch loss 3.325935317175463 epoch_ld {'nlcpl': {'loss': 1.738677510144189, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.587257807031274, 'nsr': 0.5959300601482391, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.528726931318717 val ld {'nlcpl': {'loss': 2.7220604267626496, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.806666504556068, 'nsr': 0.5171312945425467, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.479923634679551
+epoch 48
+epoch loss 3.304352936676316 epoch_ld {'nlcpl': {'loss': 1.7226456596221116, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.581707277054204, 'nsr': 0.5979645599302211, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.537095965122677 val ld {'nlcpl': {'loss': 2.7322114348422524, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8048845302804242, 'nsr': 0.5170484035549311, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.479923634679551
+epoch 49
+epoch loss 3.2860544024602225 epoch_ld {'nlcpl': {'loss': 1.7091112528343377, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.5769431496258848, 'nsr': 0.6001471597585619, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.576895923793009 val ld {'nlcpl': {'loss': 2.761624982716232, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.815270941076777, 'nsr': 0.5177314093691449, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.479923634679551
+epoch 50
+epoch loss 3.2713365078712844 epoch_ld {'nlcpl': {'loss': 1.6974675759765672, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.573868931894717, 'nsr': 0.6011659233466439, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.594412271155427 val ld {'nlcpl': {'loss': 2.7788045650637265, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8156077060917004, 'nsr': 0.5168756027764217, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.479923634679551
+epoch 51
+epoch loss 3.254134726727971 epoch_ld {'nlcpl': {'loss': 1.684759647190941, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.5693750795370303, 'nsr': 0.6030423019613539, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.530370149819003 val ld {'nlcpl': {'loss': 2.7267168121600167, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8036533376589867, 'nsr': 0.5189245033288282, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.479923634679551
+epoch 52
+epoch loss 3.2353887677118465 epoch_ld {'nlcpl': {'loss': 1.6704295378915994, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.5649592298202468, 'nsr': 0.6047609598372378, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.544635950565075 val ld {'nlcpl': {'loss': 2.7403320158839315, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8043039346811436, 'nsr': 0.5189581470093892, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.479923634679551
+epoch 53
+epoch loss 3.220700490563442 epoch_ld {'nlcpl': {'loss': 1.6592881127119656, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.5614123778514768, 'nsr': 0.6060735018318404, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}
+val loss 4.605698008465803 val ld {'nlcpl': {'loss': 2.7959524429155853, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8097455655502168, 'nsr': 0.518223722951214, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}} best val loss  4.479923634679551
+Exiting due to early stopping
+{'train_loss': [(9.416263038758768, {'nlcpl': {'loss': 6.529430582395674, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.8868324563630936, 'nsr': 0.14510118111893813, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (7.080926866152742, {'nlcpl': {'loss': 4.56271581880508, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.5182110473476627, 'nsr': 0.2576824546267022, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (6.476782659045478, {'nlcpl': {'loss': 4.1152977292377155, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.3614849298077627, 'nsr': 0.31165870431429726, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (6.017883336069572, {'nlcpl': {'loss': 3.7639534049366246, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.2539299311329475, 'nsr': 0.34899292712039615, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (5.668620911132679, {'nlcpl': {'loss': 3.4947410016768283, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.1738799094558505, 'nsr': 0.37683150354544914, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (5.435202043693258, {'nlcpl': {'loss': 3.3163914190316053, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.118810624661653, 'nsr': 0.39637834803658245, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (5.257635520671403, {'nlcpl': {'loss': 3.1825195513804854, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.0751159692909176, 'nsr': 0.4126149306113218, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (5.124620648473501, {'nlcpl': {'loss': 3.0816602949798106, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.0429603534936907, 'nsr': 0.42473659727722407, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (5.02878827708108, {'nlcpl': {'loss': 3.011363729647825, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.0174245474332557, 'nsr': 0.4343655807407279, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (4.975728527230411, {'nlcpl': {'loss': 2.9737718247655613, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.001956702464849, 'nsr': 0.44038877313706415, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (4.8935033960330525, {'nlcpl': {'loss': 2.9140071643245027, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.9794962317085503, 'nsr': 0.44851482560299105, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (4.778845578209678, {'nlcpl': {'loss': 2.82956865022135, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.9492769279883275, 'nsr': 0.45937711497147876, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (4.674182118023213, {'nlcpl': {'loss': 2.7523268394505798, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.9218552785726328, 'nsr': 0.46915287324296895, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (4.5754735864708165, {'nlcpl': {'loss': 2.6795326631660035, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8959409233048132, 'nsr': 0.47884097454111424, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (4.487874715072874, {'nlcpl': {'loss': 2.6138590221684126, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8740156929044616, 'nsr': 0.4866708539713958, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (4.416386428835383, {'nlcpl': {'loss': 2.5609351862709073, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8554512425644758, 'nsr': 0.49364167236598905, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (4.345590624023466, {'nlcpl': {'loss': 2.5077339253026745, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8378566987207916, 'nsr': 0.5001053952992186, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (4.2881941895307225, {'nlcpl': {'loss': 2.4653187859132424, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8228754036174797, 'nsr': 0.5055584932336156, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (4.22171322242409, {'nlcpl': {'loss': 2.4155946046596446, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8061186177644457, 'nsr': 0.5117365938343413, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (4.1663335671745925, {'nlcpl': {'loss': 2.373728360915719, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.7926052062588738, 'nsr': 0.5170100811785296, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (4.117187064856365, {'nlcpl': {'loss': 2.336447562734385, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.78073950212198, 'nsr': 0.5215931129723118, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (4.0679205793543645, {'nlcpl': {'loss': 2.2999493568169505, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.767971222537414, 'nsr': 0.5260634175559826, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (4.019894683137536, {'nlcpl': {'loss': 2.2636549580842256, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.7562397250533104, 'nsr': 0.5306751174852252, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.9792554234137127, {'nlcpl': {'loss': 2.2326253109598815, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.7466301124538313, 'nsr': 0.5343425341442246, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.9354171455647813, {'nlcpl': {'loss': 2.1998844733878746, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.7355326721769067, 'nsr': 0.5384627780066201, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.8949489842660676, {'nlcpl': {'loss': 2.1687852720666374, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.7261637121994302, 'nsr': 0.5419414167078386, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.860850634417528, {'nlcpl': {'loss': 2.143292757004017, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.717557877413511, 'nsr': 0.5455014971021104, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.8220677868778195, {'nlcpl': {'loss': 2.1141949647598053, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.707872822118014, 'nsr': 0.5490979667236743, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.787810786966946, {'nlcpl': {'loss': 2.088407591207152, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6994031957597946, 'nsr': 0.5528844927735719, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.7520788452835294, {'nlcpl': {'loss': 2.0612537873072303, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6908250579762991, 'nsr': 0.5558382277527163, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.7273726912026994, {'nlcpl': {'loss': 2.0427589707457914, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.684613720456908, 'nsr': 0.5582781505495421, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.6956656828522685, {'nlcpl': {'loss': 2.0182847280800345, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.677380954772234, 'nsr': 0.5609012426063419, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.667605120010507, {'nlcpl': {'loss': 1.9974360172810994, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6701691027294074, 'nsr': 0.5639695774884592, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.6368154616498236, {'nlcpl': {'loss': 1.9737530329927284, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6630624286570952, 'nsr': 0.5667093262372919, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.613226036887217, {'nlcpl': {'loss': 1.9560604811532243, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6571655557339924, 'nsr': 0.5689488013189035, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.578304489391931, {'nlcpl': {'loss': 1.9298547991684505, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6484496902234806, 'nsr': 0.5721525850133126, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.5587185300914537, {'nlcpl': {'loss': 1.915046364068985, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6436721660224687, 'nsr': 0.5740668448095166, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.531752752761046, {'nlcpl': {'loss': 1.8944808055289941, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6372719472320518, 'nsr': 0.5762809570230062, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.5099297267562277, {'nlcpl': {'loss': 1.878193935302839, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6317357914533888, 'nsr': 0.5786962578557941, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.482777321942855, {'nlcpl': {'loss': 1.8572050782096623, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6255722437331925, 'nsr': 0.5810258733988994, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.4624891123231154, {'nlcpl': {'loss': 1.8421969853387856, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6202921269843298, 'nsr': 0.5832188175331732, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.4439460283026713, {'nlcpl': {'loss': 1.828081184837702, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6158648434649692, 'nsr': 0.5847646553120512, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.4160829818722034, {'nlcpl': {'loss': 1.8069736430278192, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.6091093388443845, 'nsr': 0.5877780433993778, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.4015976253181623, {'nlcpl': {'loss': 1.7959109606625434, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.605686664655619, 'nsr': 0.5888741045372742, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.37805113802081, {'nlcpl': {'loss': 1.7783675627443856, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.5996835752764247, 'nsr': 0.5913178698900632, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.3619675400094216, {'nlcpl': {'loss': 1.765947794099772, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.5960197459096495, 'nsr': 0.5925453618816707, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.3435995855845917, {'nlcpl': {'loss': 1.751873684667088, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.591725900917504, 'nsr': 0.5943086745578852, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.325935317175463, {'nlcpl': {'loss': 1.738677510144189, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.587257807031274, 'nsr': 0.5959300601482391, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.304352936676316, {'nlcpl': {'loss': 1.7226456596221116, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.581707277054204, 'nsr': 0.5979645599302211, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.2860544024602225, {'nlcpl': {'loss': 1.7091112528343377, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.5769431496258848, 'nsr': 0.6001471597585619, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.2713365078712844, {'nlcpl': {'loss': 1.6974675759765672, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.573868931894717, 'nsr': 0.6011659233466439, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.254134726727971, {'nlcpl': {'loss': 1.684759647190941, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.5693750795370303, 'nsr': 0.6030423019613539, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.2353887677118465, {'nlcpl': {'loss': 1.6704295378915994, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.5649592298202468, 'nsr': 0.6047609598372378, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}}), (3.220700490563442, {'nlcpl': {'loss': 1.6592881127119656, 'count': 121050350, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.5614123778514768, 'nsr': 0.6060735018318404, 'count': tensor(4174150., device='cuda:0'), 'scaling_factor': 1}})], 'val_loss': [(7.310027043375572, {'nlcpl': {'loss': 4.688043320328107, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.6219837230474656, 'nsr': 0.22258341308844887, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (6.746846867274326, {'nlcpl': {'loss': 4.306875561860838, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.439971305413488, 'nsr': 0.277566758388101, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (6.236424942592034, {'nlcpl': {'loss': 3.9305392967768675, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.3058856458151666, 'nsr': 0.33006323336173365, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (5.7603136593142885, {'nlcpl': {'loss': 3.5646049793017447, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.195708680012544, 'nsr': 0.3679094433433611, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (5.656979208311849, {'nlcpl': {'loss': 3.4983529482280797, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.158626260083769, 'nsr': 0.38085752592104777, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (5.421255680679661, {'nlcpl': {'loss': 3.31630607432877, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.1049496063508912, 'nsr': 0.4004021478300151, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (5.22444412816176, {'nlcpl': {'loss': 3.165964761975059, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.058479366186702, 'nsr': 0.4177201529190416, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (5.103528806880785, {'nlcpl': {'loss': 3.0808962319509523, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.0226325749298333, 'nsr': 0.42914138612631403, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (5.074160738628168, {'nlcpl': {'loss': 3.05968221182153, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.0144785268066383, 'nsr': 0.4335388978552608, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (5.182187724323988, {'nlcpl': {'loss': 3.1362841895961693, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 2.0459035347278194, 'nsr': 0.4260124391036669, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.955146343722073, {'nlcpl': {'loss': 2.972702863069033, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.98244348065304, 'nsr': 0.44668491482405737, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.93133224920809, {'nlcpl': {'loss': 2.960552940875665, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.970779308332425, 'nsr': 0.4501484835066718, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.8391893111098065, {'nlcpl': {'loss': 2.8954971690358615, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.943692142073945, 'nsr': 0.4607869865396077, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.806338577980149, {'nlcpl': {'loss': 2.880850689848878, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.9254878881312716, 'nsr': 0.466262105021782, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.752133431221476, {'nlcpl': {'loss': 2.8375872074680526, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.9145462237534232, 'nsr': 0.47135941138199094, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.666256666183472, {'nlcpl': {'loss': 2.7774392893596813, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8888173768237901, 'nsr': 0.48052724298415944, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.624383266288801, {'nlcpl': {'loss': 2.7456519009656466, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8787313653231543, 'nsr': 0.48419957888135146, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.635343025106117, {'nlcpl': {'loss': 2.757673590827111, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8776694342790061, 'nsr': 0.48570485424039295, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.628518449242629, {'nlcpl': {'loss': 2.760467562322848, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.868050886919781, 'nsr': 0.49023220649727833, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.627167751172433, {'nlcpl': {'loss': 2.760172933690946, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8669948174814865, 'nsr': 0.4905571551161535, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.584098752980025, {'nlcpl': {'loss': 2.725809574960522, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8582891780195032, 'nsr': 0.49209937272899024, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.584241877218833, {'nlcpl': {'loss': 2.727117192732051, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8571246844867821, 'nsr': 0.4928270207664561, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.687416064226074, {'nlcpl': {'loss': 2.8122358751305767, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8751801890954978, 'nsr': 0.49291114194964203, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.535836744694432, {'nlcpl': {'loss': 2.695914208362697, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8399225363317353, 'nsr': 0.4998557163653258, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.5245649725132955, {'nlcpl': {'loss': 2.6900649979063656, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8344999746069302, 'nsr': 0.5022254717687722, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.502926464200108, {'nlcpl': {'loss': 2.671288797353628, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8316376668464796, 'nsr': 0.5020477662714112, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.536396734279425, {'nlcpl': {'loss': 2.703491779922825, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8329049543565998, 'nsr': 0.5026739733053798, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.6103406166267185, {'nlcpl': {'loss': 2.7641383571559843, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8462022594707341, 'nsr': 0.5032034339746454, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.54794399228668, {'nlcpl': {'loss': 2.7138167627161263, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.834127229570553, 'nsr': 0.5035092721284093, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.525348446786272, {'nlcpl': {'loss': 2.698980512504546, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.826367934281726, 'nsr': 0.5047928558565221, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.5472371148615744, {'nlcpl': {'loss': 2.7176538624467, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8295832524148745, 'nsr': 0.5057810549024627, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.492318020400271, {'nlcpl': {'loss': 2.66956981387184, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8227482065284313, 'nsr': 0.5053361435424237, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.4909021741243915, {'nlcpl': {'loss': 2.6732216172134113, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8176805569109802, 'nsr': 0.5097624443367266, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.536592012012242, {'nlcpl': {'loss': 2.7134323733049426, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8231596387072992, 'nsr': 0.5075471691233521, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.510061794098377, {'nlcpl': {'loss': 2.6939766259865343, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.816085168111842, 'nsr': 0.510566615768879, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.527611651277613, {'nlcpl': {'loss': 2.706840407001876, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8207712442757367, 'nsr': 0.5107776797469089, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.563055757764861, {'nlcpl': {'loss': 2.7387932731308773, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8242624846339839, 'nsr': 0.5099299418917467, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.479923634679551, {'nlcpl': {'loss': 2.6708350734095787, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.809088561269972, 'nsr': 0.5134771890538067, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.520026818016507, {'nlcpl': {'loss': 2.708381243801187, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.81164557421532, 'nsr': 0.5115893168801152, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.514581380914993, {'nlcpl': {'loss': 2.700361942394066, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.814219438520927, 'nsr': 0.5129569873729114, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.484868195256036, {'nlcpl': {'loss': 2.6782061924953684, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8066620027606675, 'nsr': 0.5126159742989902, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.545192907791177, {'nlcpl': {'loss': 2.73247730928234, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8127155985088363, 'nsr': 0.5139703074630523, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.495195778318413, {'nlcpl': {'loss': 2.691307735726007, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8038880425924058, 'nsr': 0.5149849405768516, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.499933852133635, {'nlcpl': {'loss': 2.6926471637925125, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8072866883411225, 'nsr': 0.5154595399128767, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.548247980821475, {'nlcpl': {'loss': 2.735704872803797, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.812543108017678, 'nsr': 0.5136592990339811, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.560420866389543, {'nlcpl': {'loss': 2.747048199609898, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.813372666779645, 'nsr': 0.5149740422085597, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.5667556696753016, {'nlcpl': {'loss': 2.7508964268949825, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.815859242780319, 'nsr': 0.5130272250652664, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.528726931318717, {'nlcpl': {'loss': 2.7220604267626496, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.806666504556068, 'nsr': 0.5171312945425467, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.537095965122677, {'nlcpl': {'loss': 2.7322114348422524, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8048845302804242, 'nsr': 0.5170484035549311, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.576895923793009, {'nlcpl': {'loss': 2.761624982716232, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.815270941076777, 'nsr': 0.5177314093691449, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.594412271155427, {'nlcpl': {'loss': 2.7788045650637265, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8156077060917004, 'nsr': 0.5168756027764217, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.530370149819003, {'nlcpl': {'loss': 2.7267168121600167, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8036533376589867, 'nsr': 0.5189245033288282, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.544635950565075, {'nlcpl': {'loss': 2.7403320158839315, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8043039346811436, 'nsr': 0.5189581470093892, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}}), (4.605698008465803, {'nlcpl': {'loss': 2.7959524429155853, 'count': 13126183, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.8097455655502168, 'nsr': 0.518223722951214, 'count': tensor(452627., device='cuda:0'), 'scaling_factor': 1}})]}
+test loss 4.503905987033079 test loss dict {'nlcpl': {'loss': 2.7164045301081177, 'count': 21720855, 'scaling_factor': 1}, 'loss_smoothed': {'loss': 1.7875014569249614, 'nsr': 0.5217550541501946, 'count': tensor(748995., device='cuda:0'), 'scaling_factor': 1}}
