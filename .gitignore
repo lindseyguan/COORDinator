@@ -117,4 +117,3 @@ scripts/data/postprocessing/shell_scripts
 scripts/models/train/bash_files
 scripts/models/eval/bash_files
 scripts/submit_scripts
-data
