@@ -15,14 +15,24 @@ import torch
 from terminator.utils.common import seq_to_ints, ints_to_seq
 np.seterr(all='ignore')
 
-def convert_df_to_data(df, data, pos_col='pos', wt_col='wildtype', mutant_col='mutant', label_col='mutation', chain_col='chain', ener_col='ener', site_split=None, mut_split=None, adj_index=True):
+def convert_seq_df_to_data(df, data, seq_col='seqs', ener_col='ener'):
+    seq = "".join(ints_to_seq(data['sequence']))
+    df = df[df[seq_col] != seq]
+    sort_seqs, sort_nrgs = [], []
+    for mut_seq, ener in zip(df[seq_col], df[ener_col]):
+        sort_seqs.append(torch.from_numpy(np.array(seq_to_ints(mut_seq))))
+        sort_nrgs.append(torch.from_numpy(np.array(-1*ener)))
+    return torch.stack(sort_seqs), torch.Tensor(sort_nrgs)  
+
+
+def convert_df_to_data(df, data, pos_col='pos', wt_col='wildtype', mutant_col='mutant', label_col='mutation', chain_col='chain', ener_col='ener', site_split=None, mut_split=None, adj_index=True, pos_by_chain=True):
     sort_seqs = []
     sort_nrgs = []
     seq = "".join(ints_to_seq(data['sequence']))
-    for pos_list, wt_list, mutant_list, chain, label_list, ener in zip(df[pos_col].values, df[wt_col].values, df[mutant_col].values, df[chain_col].values, df[label_col].values, df[ener_col].values):
+    for pos_list, wt_list, mutant_list, chain_list, label_list, ener in zip(df[pos_col].values, df[wt_col].values, df[mutant_col].values, df[chain_col].values, df[label_col].values, df[ener_col].values):
         skip = False
         mut_seq = copy.deepcopy(list(seq))
-        for pos, wt, mutant, label in zip(str(pos_list).split(';'), str(wt_list).split(';'), str(mutant_list).split(';'), str(label_list).split(';')):
+        for pos, wt, mutant, label, chain in zip(str(pos_list).split(';'), str(wt_list).split(';'), str(mutant_list).split(';'), str(label_list).split(';'), str(chain_list).split(';')):
             pos = int(pos)
             if site_split is not None and pos not in site_split:
                 skip = True
@@ -40,6 +50,7 @@ def convert_df_to_data(df, data, pos_col='pos', wt_col='wildtype', mutant_col='m
                 rcl += cl
             res_ids = data['res_ids'][rcl:rcl+cl]
             chain_seq = seq[rcl:rcl+cl]
+            # print(chain_seq)
             pos = int(pos)
             if adj_index:
                 seq_ind = np.where(res_ids == pos)[0]
@@ -50,14 +61,22 @@ def convert_df_to_data(df, data, pos_col='pos', wt_col='wildtype', mutant_col='m
                     skip = True
                     break
                 seq_ind = seq_ind.item()
+            elif pos_by_chain:
+                seq_ind = pos
             else:
                 seq_ind = pos - rcl
-            if chain_seq[seq_ind] != wt:
-                skip = True
-                break
+            try:
+                if chain_seq[seq_ind] != wt:
+                    print('ERROR', rcl,data['chain_lens'], pos, seq_ind, chain_seq, wt, label, df['protein'].values[0])
+                    skip = True
+                    break
+            except Exception as e:
+                print(seq_ind, len(chain_seq), pos, label)
+                print(e)
+                raise ValueError
+                continue
             mut_seq[seq_ind + rcl] = mutant
         if skip:
-            print("SKIP")
             continue
         mut_seq = "".join(mut_seq)
         sort_seqs.append(torch.from_numpy(np.array(seq_to_ints(mut_seq))))
@@ -105,11 +124,7 @@ def process_residue(residue):
                     coord = infer_oxygen_position(n_coord, ca_coord, c_coord)
                     coordinates.append(np.array(coord))
                     continue
-        try:
-            coordinates.append(np.array(coord.get_coord()))
-        except Exception as e:
-            print(residue.id[1], residue.resname)
-            raise e
+        coordinates.append(np.array(coord.get_coord()))
     return np.stack(coordinates), seq1(residue.resname), residue.id[1]
 
 def process_chain(chain, add_gap=False):
@@ -321,7 +336,7 @@ def parse_PDB(path_to_pdb, input_chain_list=None, ca_only=False, add_gap=False):
             c+=1
     return pdb_dict_list
 
-def process_data(pdb_data, pdb_dict_list, x_chain, pdb):
+def process_data(pdb_data, pdb_dict_list, x_chain, pdb, site_split):
     seq = ''
     for chain_seq in pdb_data[1]:
         seq += chain_seq
@@ -356,7 +371,7 @@ def process_data(pdb_data, pdb_dict_list, x_chain, pdb):
 
     return batch
 
-def load_data(pdb_dir, pdb_list, add_gap, ener_col='ener', sep_complex=False, ener_data=None, adj_index=True):
+def load_data(pdb_dir, pdb_list, add_gap, ener_col='ener', sep_complex=False, ener_data=None, adj_index=True, site_split=None, pos_by_chain=True, seq_df=False, seq_col='seqs'):
     parser = PDBParser(QUIET=True)
     dataset = []
     if sep_complex:
@@ -364,15 +379,21 @@ def load_data(pdb_dir, pdb_list, add_gap, ener_col='ener', sep_complex=False, en
         binder_dataset = []
     for pdb in pdb_list:
         pdb_path = os.path.join(pdb_dir, pdb)
+        if '.pdb' not in pdb_path:
+            pdb_path += '.pdb'
         if not os.path.exists(pdb_path):
             continue
-        pdb_data = process_pdb_raw(parser, pdb_path, add_gap=add_gap)
-        if pdb_data is None:
-            continue
-        pdb_dict_list = parse_PDB(pdb_path, input_chain_list=pdb_data[2], add_gap=add_gap)
-        x_protein = np.concatenate(pdb_data[0], 0)
+        try:
+            pdb_data = process_pdb_raw(parser, pdb_path, add_gap=add_gap)
+            if pdb_data is None:
+                continue
+            pdb_dict_list = parse_PDB(pdb_path, input_chain_list=pdb_data[2], add_gap=add_gap)
+            x_protein = np.concatenate(pdb_data[0], 0)
 
-        batch = process_data(pdb_data, pdb_dict_list, x_protein, pdb)
+            batch = process_data(pdb_data, pdb_dict_list, x_protein, pdb, site_split)
+
+        except:
+            continue
         if batch is None:
             continue
         if ener_data is not None:
@@ -383,11 +404,21 @@ def load_data(pdb_dir, pdb_list, add_gap, ener_col='ener', sep_complex=False, en
             except:
                 print("Energy file not found. If none is required, use ener_data=None")
                 raise ValueError
-            sort_seqs, sort_nrgs = convert_df_to_data(ener_df, batch, ener_col=ener_col, adj_index=adj_index)
+            try:
+                if pdb == '1RTP':
+                    print(ener_df)
+                    print(ener_df[ener_df['protein'] == '1RTP'])
+                if seq_df:
+                    sort_seqs, sort_nrgs = convert_seq_df_to_data(ener_df, batch, seq_col=seq_col, ener_col=ener_col)
+                else:
+                    sort_seqs, sort_nrgs = convert_df_to_data(ener_df, batch, ener_col=ener_col, adj_index=adj_index, site_split=site_split, pos_by_chain=pos_by_chain)
+            except Exception as e:
+                print(pdb)
+                print(e)
+                raise e
             batch['sortcery_seqs'] = sort_seqs
             batch['sortcery_nrgs'] = sort_nrgs
         dataset.append([batch])
-
         if sep_complex:
             target_num = np.argmax(batch['chain_lens'])
             for chain_num, chain_id in enumerate(batch['chain_ids']):
@@ -398,7 +429,7 @@ def load_data(pdb_dir, pdb_list, add_gap, ener_col='ener', sep_complex=False, en
                                     'name': pdb_dict_list[0]['name'], 'num_of_chains': 1, 'seq': pdb_dict_list[0][f'seq_chain_{chain_id}']
                                     }]
                 x_chain = pdb_data[0][chain_num]
-                batch = process_data(chain_data, chain_dict_list, x_chain, pdb + '_' + chain_id)
+                batch = process_data(chain_data, chain_dict_list, x_chain, pdb + '_' + chain_id, site_split)
                 if chain_num == target_num:
                     target_dataset.append([batch])
                 else:
