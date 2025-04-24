@@ -371,7 +371,7 @@ def process_data(pdb_data, pdb_dict_list, x_chain, pdb, site_split):
 
     return batch
 
-def load_data(pdb_dir, pdb_list, add_gap, ener_col='ener', sep_complex=False, ener_data=None, adj_index=True, site_split=None, pos_by_chain=True, seq_df=False, seq_col='seqs'):
+def load_data(pdb_dir, pdb_list, add_gap, ener_col='ener', sep_complex=False, ener_data=None, adj_index=True, seq_df=False, seq_col='seqs', site_split=None, pos_by_chain=True):
     parser = PDBParser(QUIET=True)
     dataset = []
     if sep_complex:
@@ -405,9 +405,7 @@ def load_data(pdb_dir, pdb_list, add_gap, ener_col='ener', sep_complex=False, en
                 print("Energy file not found. If none is required, use ener_data=None")
                 raise ValueError
             try:
-                if pdb == '1RTP':
-                    print(ener_df)
-                    print(ener_df[ener_df['protein'] == '1RTP'])
+                print('seqy seqy: ', seq_df)
                 if seq_df:
                     sort_seqs, sort_nrgs = convert_seq_df_to_data(ener_df, batch, seq_col=seq_col, ener_col=ener_col)
                 else:
