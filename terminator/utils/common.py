@@ -474,6 +474,8 @@ def backwards_compat(model_hparams, run_hparams):
         model_hparams["center_node_only"] = False
     if "node_finetune" not in run_hparams.keys():
         run_hparams["node_finetune"] = False
+    if "edge_transfer" not in model_hparams.keys():
+        model_hparams["edge_transfer"] = False
         
     run_hparams['confidence_vector'] = model_hparams['confidence_vector']
     model_hparams['ft_dropout'] = run_hparams['ft_dropout']
