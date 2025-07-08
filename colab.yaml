@@ -1,0 +1,40 @@
+name: coordinator
+channels:
+  - pyg
+  - acellera
+  - defaults
+  - conda-forge
+  - anaconda
+dependencies:
+  - matplotlib
+  - networkx
+  - pandas
+  - pip
+  - protobuf
+  - pylint
+  - torch
+  - torchvision
+  - torchaudio
+  - scipy
+  - seaborn
+  - tqdm
+  - traitlets
+  - yaml
+  - pip:
+      - biopython==1.84
+      - blosum
+      - gputil
+      - kaleido
+      - notebook
+      - numpy
+      - scikit-base
+      - scikit-learn
+      - scikit-plot
+      - sentry-sdk
+      - transformers
+      - torch
+      - torchvision
+      - torchaudio
+      - https://github.com/facebookresearch/esm/archive/refs/tags/v1.0.3.zip
+      - wandb
+      - webdataset

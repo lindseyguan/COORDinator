@@ -929,7 +929,18 @@ def parse_chain_ends(chain_lens, fix_type='replace'):
         prev_cl += cl
     return {'begin': chain_begin.long(), 'end': chain_end.long(), 'singles': chain_singles.float()}
 
-def _wds_package(b_idx, use_sc=False, mpnn_dihedrals=False, no_mask=False, sc_mask_rate=0.15, base_sc_mask=0.05, chain_mask=False, sc_mask_schedule=False, sc_info='all', sc_mask=[], mask_neighbors=False, mask_interface=False, half_interface=False, interface_pep=True, inter_cutoff=16, sc_screen=False, sc_screen_range=[], sc_noise=0, epoch=0, msa_type="", msa_id_cutoff=0.5, flex_type="", replicate=1, noise_level=0, bond_length_noise_level=0, bond_angle_noise_level=0, noise_lim=0, pair_etab_dir='', esm=None, batch_converter=None, use_esm_attns=False, use_reps=False, post_esm_mask=False, from_rla=False, esm_embed_layer=30, fix_seed=True, connect_chains=False, convert_to_esm=False, one_hot=False, all_batch=False, dev='cpu', chain_handle='', openfold_backbone=False, random_interface=False, from_pepmlm=False, nrg_noise=0, fix_multi_rate=False, load_etab_dir=""):
+def _wds_package(b_idx, use_sc=False, mpnn_dihedrals=False, no_mask=False, sc_mask_rate=0.15, 
+                 base_sc_mask=0.05, chain_mask=False, sc_mask_schedule=False, sc_info='all', 
+                 sc_mask=[], mask_neighbors=False, mask_interface=False, half_interface=False, 
+                 interface_pep=True, inter_cutoff=16, sc_screen=False, sc_screen_range=[], 
+                 sc_noise=0, epoch=0, msa_type="", msa_id_cutoff=0.5, flex_type="", replicate=1, 
+                 noise_level=0, bond_length_noise_level=0, bond_angle_noise_level=0, noise_lim=0, 
+                 pair_etab_dir='', esm=None, batch_converter=None, use_esm_attns=False, 
+                 use_reps=False, post_esm_mask=False, from_rla=False, esm_embed_layer=30, 
+                 fix_seed=True, connect_chains=False, convert_to_esm=False, one_hot=False, 
+                 all_batch=False, dev='cpu', chain_handle='', openfold_backbone=False, 
+                 random_interface=False, from_pepmlm=False, nrg_noise=0, fix_multi_rate=False, 
+                 load_etab_dir="", monogram_stats=""):
     """Package the given datapoints into tensors based on provided indices.
 
     Tensors are extracted from the data and padded. Coordinates are featurized
@@ -1451,11 +1462,6 @@ def _wds_package(b_idx, use_sc=False, mpnn_dihedrals=False, no_mask=False, sc_ma
         sortcery_seqs = pad_sequence(padded_sort_seqs, batch_first=True, padding_value=21).to(dtype=torch.int64)
         sortcery_nrgs = pad_sequence(sortcery_nrgs, batch_first=True, padding_value = torch.nan)
 
-    monogram_stats = '/data1/groups/keatinglab/fosterb/ngram_stats/monogram_seg.p'
-    if not os.path.exists(monogram_stats):
-        monogram_stats = '/mnt/shared/fosterb/ngram_stats/monogram_seg.p'
-    if not os.path.exists(monogram_stats):
-        monogram_stats = '/nobackup1c/users/fosterb/ngram_stats/monogram_seg.p'
     with open(monogram_stats, 'rb') as f:
         monogram_stats = pickle.load(f)
 
@@ -2454,7 +2460,22 @@ def WDSBatchSampler_package(self, b_idx):
                 data[0]['sequence'] = np.array(cur_seqs[0], dtype=int)
                 seq_ids = seq_ids[inds[::-1]]
                 data[0]['seq_id'] = np.array(seq_ids[0], dtype=float)
-    return _wds_package(b_idx, self.use_sc, self.mpnn_dihedrals, self.no_mask, self.sc_mask_rate, self.base_sc_mask, self.chain_mask, self.sc_mask_schedule, self.sc_info, self.sc_mask, self.mask_neighbors, self.mask_interface, self.half_interface, self.interface_pep, self.inter_cutoff, self.sc_screen, self.sc_screen_range, self.sc_noise, self.epoch, self.msa_type, self.msa_id_cutoff, self.flex_type, self.replicate, self.noise_level, self.bond_length_noise_level, self.bond_angle_noise_level, self.noise_lim, self.pair_etab_dir, self.esm, self.batch_converter, self.use_esm_attns, self.use_reps, self.post_esm_mask, self.from_rla, self.esm_embed_layer, self.fix_seed, self.connect_chains, self.convert_to_esm, self.one_hot, self.all_batch, self.dev, self.chain_handle, self.openfold_backbone, self.random_interface, self.from_pepmlm, self.nrg_noise, self.fix_multi_rate, self.load_etab_dir)
+    return _wds_package(b_idx, self.use_sc, self.mpnn_dihedrals, self.no_mask, 
+                        self.sc_mask_rate, self.base_sc_mask, self.chain_mask, 
+                        self.sc_mask_schedule, self.sc_info, self.sc_mask, 
+                        self.mask_neighbors, self.mask_interface, 
+                        self.half_interface, self.interface_pep, self.inter_cutoff,
+                        self.sc_screen, self.sc_screen_range, self.sc_noise, self.epoch, 
+                        self.msa_type, self.msa_id_cutoff, self.flex_type, 
+                        self.replicate, self.noise_level, self.bond_length_noise_level, 
+                        self.bond_angle_noise_level, self.noise_lim, self.pair_etab_dir, 
+                        self.esm, self.batch_converter, self.use_esm_attns, 
+                        self.use_reps, self.post_esm_mask, self.from_rla, 
+                        self.esm_embed_layer, self.fix_seed, self.connect_chains, 
+                        self.convert_to_esm, self.one_hot, self.all_batch, self.dev, 
+                        self.chain_handle, self.openfold_backbone, self.random_interface, 
+                        self.from_pepmlm, self.nrg_noise, self.fix_multi_rate, self.load_etab_dir, 
+                        self.monogram_stats)
 
 def WDSBatchSampler_len(self):
     """Returns length of dataset, i.e. number of batches.

@@ -132,6 +132,8 @@ def load_model(args, model_hparams=None, run_hparams=None):
     test_dataset = [data for data in test_dataset if (data[0]['coords'].shape[0] > model_hparams['k_neighbors']) and (data[0]['coords'].shape[0] < run_hparams['max_seq_tokens'])]
     # test_batch_sampler = TERMBatchSampler(False, test_dataset, batch_size=1, shuffle=False, msa_type='single', dev=args.dev)
     test_batch_sampler = WDSBatchSamplerWrapper(ddp=False)
+    test_batch_sampler.sampler.monogram_stats = args.monogram_stats
+ 
     if 'sc_screen_range' in dir(args):
         sc_screen_range = args.sc_screen_range
     else:
@@ -214,7 +216,7 @@ def load_model(args, model_hparams=None, run_hparams=None):
     
     if args.verbose:
         print('Loading from: ', os.path.join(args.model_dir, args.checkpoint))
-    best_checkpoint_state = torch.load(os.path.join(args.model_dir, args.checkpoint), map_location=dev)
+    best_checkpoint_state = torch.load(os.path.join(args.model_dir, args.checkpoint), map_location=dev, weights_only=False)
     best_checkpoint = best_checkpoint_state['state_dict']
     if use_esm or run_hparams['num_recycles'] > 0 or load_esm:
         if 'top.V_out.bias' not in best_checkpoint.keys() and model_hparams['nodes_to_probs']:
