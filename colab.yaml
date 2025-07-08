@@ -12,9 +12,6 @@ dependencies:
   - pip
   - protobuf
   - pylint
-  - torch
-  - torchvision
-  - torchaudio
   - scipy
   - seaborn
   - tqdm
@@ -23,6 +20,7 @@ dependencies:
   - pip:
       - biopython==1.84
       - blosum
+      - git+https://github.com/lindseyguan/COORDinator.git
       - gputil
       - kaleido
       - notebook
