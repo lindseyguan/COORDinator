@@ -176,7 +176,7 @@ def process_chains(chains, pep=False, prot=False, add_gap=False):
         if (pep and chain.id != pep_id) or (prot and chain.id != prot_id):
             continue
         out = process_chain(chain, add_gap)
-        if out is not None:
+        if out is not None and out[0] is not None:
             output.append(out)
             chain_ids.append(chain.id)
     coords = [u[0] for u in output]
