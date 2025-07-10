@@ -1743,10 +1743,10 @@ def stability_loss_loop(base_etab, E_idx, data, max_tokens=20000, use_sc_mask=Fa
     norm_ref = ref_energies - torch.mean(ref_energies) # n
 
     pearson = torch.sum(norm_pred * norm_ref) / (torch.sqrt(torch.sum(norm_pred**2)) * torch.sqrt(torch.sum(norm_ref**2)))
-    if torch.isnan(pearson):
-        return 0, -1
     if return_preds:
         return -pearson, predicted_E, ref_energies
+    if torch.isnan(pearson):
+        return 0, -1
     return -pearson, data['sortcery_nrgs'].shape[1] # scalar; negate, since we want to minimize our loss function
 
 def stability_loss_loop_ddg(base_etab, E_idx, data, max_tokens=20000, use_sc_mask=False, return_preds=False, return_norm=True, prob_calc=False, prob_out=None, multiseq=False):
@@ -1797,8 +1797,8 @@ def stability_loss_loop_ddg(base_etab, E_idx, data, max_tokens=20000, use_sc_mas
     pearson = torch.sum(norm_pred * norm_ref) / (torch.sqrt(torch.sum(norm_pred**2)) * torch.sqrt(torch.sum(norm_ref**2)))
     if return_preds:
         if not return_norm:
-            return -pearson, predicted_E, ref_energies, all_seqs
-        return -pearson, norm_pred, norm_ref, all_seqs
+            return -pearson, predicted_E, ref_energies
+        return -pearson, norm_pred, norm_ref
     if torch.isnan(pearson):
         return 0, -1
     
