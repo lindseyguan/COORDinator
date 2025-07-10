@@ -1749,6 +1749,76 @@ def stability_loss_loop(base_etab, E_idx, data, max_tokens=20000, use_sc_mask=Fa
         return -pearson, predicted_E, ref_energies
     return -pearson, data['sortcery_nrgs'].shape[1] # scalar; negate, since we want to minimize our loss function
 
+def stability_loss_loop_ddg(base_etab, E_idx, data, max_tokens=20000, use_sc_mask=False, return_preds=False, return_norm=True, prob_calc=False, prob_out=None, multiseq=False):
+    ''' Compute the correlation between etab's predicted energies and experimental stability energies.
+    '''
+    # TODO hacky fix to avoid problems when without SORTCERY data
+
+    if data["sortcery_seqs"].numel() < 5:
+        return 0, -1
+    
+    b, n, k, h = base_etab.shape
+    h = int(np.sqrt(h))
+    if prob_calc and not multiseq:
+        etab = nlcpl_helper(data['seqs'], base_etab, E_idx)
+        if prob_out is not None:
+            etab = prob_out(etab.view(b, n, k - 1, 1, (h+2)**2)).view(b, n, k - 1, h+2, h+2)
+        E_idx = E_idx[:,:,1:]
+    elif not multiseq:
+        etab = base_etab.view(b, n, k, h, h)
+        pad = (0, 2, 0, 2)
+        etab = F.pad(etab, pad, "constant", 0)
+    elif prob_calc:
+        E_idx_base = E_idx.clone()
+        E_idx = E_idx[:,:,1:]
+
+    ## Add WT
+    seqs = torch.cat([data['seqs'].unsqueeze(1), data['sortcery_seqs']], dim=1)
+    nrgs = F.pad(data['sortcery_nrgs'], (1, 0), "constant", 0)
+
+    if n*nrgs.shape[1] > max_tokens:
+        batch_size = int(max_tokens / n)
+    else:
+        batch_size = nrgs.shape[1]
+    all_preds = []
+    all_refs = []
+    all_seqs = []
+    
+    for batch in range(0, nrgs.shape[1], batch_size):
+        if prob_calc and multiseq:
+            etab = nlcpl_helper_multiseq(seqs[:,batch:batch+batch_size], base_etab, E_idx_base)
+            if prob_out is not None:
+                n_seqs = etab.shape[1]
+                etab = prob_out(etab.view(b, n_seqs, n, k - 1, 1, (h+2)**2)).view(b, n_seqs, n, k - 1, h+2, h+2)
+        predicted_E, cur_seqs, ref_energies = calc_eners_stability(etab, E_idx, seqs[:,batch:batch+batch_size], nrgs[:,batch:batch+batch_size], multiseq=multiseq)
+        all_preds.append(predicted_E)
+        all_refs.append(ref_energies)
+        all_seqs.append(cur_seqs)
+
+    predicted_E = torch.cat(all_preds, dim=0)
+    ref_energies = torch.cat(all_refs, dim=0) 
+    all_seqs = torch.cat(all_seqs, dim=0)
+
+    # Normalize to WT
+    predicted_E = predicted_E[1:] - predicted_E[0]
+    ref_energies = ref_energies[1:]
+    all_seqs = all_seqs[1:]
+
+    # Normalize values around 0 for pearson correlation calculation
+    norm_pred = predicted_E - torch.mean(predicted_E) # n
+    norm_ref = ref_energies - torch.mean(ref_energies) # n
+
+    pearson = torch.sum(norm_pred * norm_ref) / (torch.sqrt(torch.sum(norm_pred**2)) * torch.sqrt(torch.sum(norm_ref**2)))
+    if return_preds:
+        if not return_norm:
+            return -pearson, predicted_E, ref_energies, all_seqs
+        return -pearson, norm_pred, norm_ref, all_seqs
+    if torch.isnan(pearson):
+        return 0, -1
+    
+    return -pearson, data['sortcery_nrgs'].shape[1] # scalar; negate, since we want to minimize our loss function
+
+
 def setup_etab(etab, E_idx):
     b, n, k, h = etab.shape
     h = int(np.sqrt(h))
