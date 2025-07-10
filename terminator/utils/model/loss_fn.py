@@ -1759,18 +1759,9 @@ def stability_loss_loop_ddg(base_etab, E_idx, data, max_tokens=20000, use_sc_mas
     
     b, n, k, h = base_etab.shape
     h = int(np.sqrt(h))
-    if prob_calc and not multiseq:
-        etab = nlcpl_helper(data['seqs'], base_etab, E_idx)
-        if prob_out is not None:
-            etab = prob_out(etab.view(b, n, k - 1, 1, (h+2)**2)).view(b, n, k - 1, h+2, h+2)
-        E_idx = E_idx[:,:,1:]
-    elif not multiseq:
-        etab = base_etab.view(b, n, k, h, h)
-        pad = (0, 2, 0, 2)
-        etab = F.pad(etab, pad, "constant", 0)
-    elif prob_calc:
-        E_idx_base = E_idx.clone()
-        E_idx = E_idx[:,:,1:]
+    etab = base_etab.view(b, n, k, h, h)
+    pad = (0, 2, 0, 2)
+    etab = F.pad(etab, pad, "constant", 0)
 
     ## Add WT
     seqs = torch.cat([data['seqs'].unsqueeze(1), data['sortcery_seqs']], dim=1)
@@ -1785,11 +1776,6 @@ def stability_loss_loop_ddg(base_etab, E_idx, data, max_tokens=20000, use_sc_mas
     all_seqs = []
     
     for batch in range(0, nrgs.shape[1], batch_size):
-        if prob_calc and multiseq:
-            etab = nlcpl_helper_multiseq(seqs[:,batch:batch+batch_size], base_etab, E_idx_base)
-            if prob_out is not None:
-                n_seqs = etab.shape[1]
-                etab = prob_out(etab.view(b, n_seqs, n, k - 1, 1, (h+2)**2)).view(b, n_seqs, n, k - 1, h+2, h+2)
         predicted_E, cur_seqs, ref_energies = calc_eners_stability(etab, E_idx, seqs[:,batch:batch+batch_size], nrgs[:,batch:batch+batch_size], multiseq=multiseq)
         all_preds.append(predicted_E)
         all_refs.append(ref_energies)
