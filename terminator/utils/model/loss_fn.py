@@ -1776,7 +1776,7 @@ def stability_loss_loop_ddg(base_etab, E_idx, data, max_tokens=20000, use_sc_mas
     all_seqs = []
     
     for batch in range(0, nrgs.shape[1], batch_size):
-        predicted_E, cur_seqs, ref_energies = calc_eners_stability(etab, E_idx, seqs[:,batch:batch+batch_size], nrgs[:,batch:batch+batch_size], multiseq=multiseq)
+        predicted_E, cur_seqs, ref_energies = calc_eners_stability(etab, E_idx, seqs[:,batch:batch+batch_size], nrgs[:,batch:batch+batch_size])
         all_preds.append(predicted_E)
         all_refs.append(ref_energies)
         all_seqs.append(cur_seqs)
