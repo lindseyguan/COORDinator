@@ -1712,7 +1712,7 @@ def stability_loss(base_etab, E_idx, data, max_tokens=20000, use_sc_mask=False):
         return 0, -1
     return -pearson, len(ref_seqs) # scalar; negate, since we want to minimize our loss function
 
-def stability_loss_loop(base_etab, E_idx, data, max_tokens=20000, use_sc_mask=False, return_preds=False):
+def stability_loss_loop(base_etab, E_idx, data, max_tokens=20000, use_sc_mask=False, return_preds=False, return_norm=True, verbose=False):
     ''' Compute the correlation between etab's predicted energies and experimental stability energies.
     '''
     # TODO hacky fix to avoid problems when without SORTCERY data
@@ -1731,25 +1731,51 @@ def stability_loss_loop(base_etab, E_idx, data, max_tokens=20000, use_sc_mask=Fa
         batch_size = data['sortcery_nrgs'].shape[1]
     all_preds = []
     all_refs = []
-    for batch in range(0, data['sortcery_nrgs'].shape[1], batch_size):
-        predicted_E, _, ref_energies = calc_eners_stability(etab, E_idx, data['sortcery_seqs'][:,batch:batch+batch_size], data['sortcery_nrgs'][:,batch:batch+batch_size])
-        all_preds.append(predicted_E)
-        all_refs.append(ref_energies)
+    if verbose:
+        for batch in tqdm(range(0, data['sortcery_nrgs'].shape[1], batch_size)):
+            predicted_E, _, ref_energies = calc_eners_stability(etab, E_idx, data['sortcery_seqs'][:,batch:batch+batch_size], data['sortcery_nrgs'][:,batch:batch+batch_size])
+            all_preds.append(predicted_E)
+            all_refs.append(ref_energies)
+    else:
+        for batch in range(0, data['sortcery_nrgs'].shape[1], batch_size):
+            predicted_E, _, ref_energies = calc_eners_stability(etab, E_idx, data['sortcery_seqs'][:,batch:batch+batch_size], data['sortcery_nrgs'][:,batch:batch+batch_size])
+            all_preds.append(predicted_E)
+            all_refs.append(ref_energies)
 
     # normalize values around 0 for pearson correlation calculation
     predicted_E = torch.cat(all_preds, dim=0)
     ref_energies = torch.cat(all_refs, dim=0)
-    norm_pred = predicted_E - torch.mean(predicted_E) # n
-    norm_ref = ref_energies - torch.mean(ref_energies) # n
+    if predicted_E.shape[0] > 1:
+        norm_pred = predicted_E - torch.mean(predicted_E) # n
+        norm_ref = ref_energies - torch.mean(ref_energies) # n
+    else:
+        norm_pred = predicted_E
+        norm_ref = ref_energies
 
     pearson = torch.sum(norm_pred * norm_ref) / (torch.sqrt(torch.sum(norm_pred**2)) * torch.sqrt(torch.sum(norm_ref**2)))
     if return_preds:
-        return -pearson, predicted_E, ref_energies
+        if not return_norm:
+            return -pearson, predicted_E, ref_energies
+        return -pearson, norm_pred, norm_ref
     if torch.isnan(pearson):
         return 0, -1
+    
     return -pearson, data['sortcery_nrgs'].shape[1] # scalar; negate, since we want to minimize our loss function
 
-def stability_loss_loop_ddg(base_etab, E_idx, data, max_tokens=20000, use_sc_mask=False, return_preds=False, return_norm=True, prob_calc=False, prob_out=None, multiseq=False):
+def worker_loop(etab, E_idx, data, max_tokens, return_preds=True, return_norm=False):
+    import gc
+    try:
+        _, predicted_E, ref_energies = stability_loss_loop(etab, E_idx, data, max_tokens=max_tokens, return_preds=return_preds, return_norm=return_norm, verbose=True)
+        torch.cuda.empty_cache()
+        return predicted_E, ref_energies
+    except RuntimeError as e:
+        if 'out of memory' in str(e):
+            torch.cuda.empty_cache()
+            gc.collect()
+        print(e)
+    
+
+def stability_loss_loop_ddg(base_etab, E_idx, data, max_tokens=20000, use_sc_mask=False, return_preds=False, return_norm=True, verbose=False):
     ''' Compute the correlation between etab's predicted energies and experimental stability energies.
     '''
     # TODO hacky fix to avoid problems when without SORTCERY data
@@ -1773,22 +1799,23 @@ def stability_loss_loop_ddg(base_etab, E_idx, data, max_tokens=20000, use_sc_mas
         batch_size = nrgs.shape[1]
     all_preds = []
     all_refs = []
-    all_seqs = []
-    
-    for batch in range(0, nrgs.shape[1], batch_size):
-        predicted_E, cur_seqs, ref_energies = calc_eners_stability(etab, E_idx, seqs[:,batch:batch+batch_size], nrgs[:,batch:batch+batch_size])
-        all_preds.append(predicted_E)
-        all_refs.append(ref_energies)
-        all_seqs.append(cur_seqs)
+    if verbose:
+        for batch in tqdm(range(0, nrgs.shape[1], batch_size)):
+            predicted_E, _, ref_energies = calc_eners_stability(etab, E_idx, seqs[:,batch:batch+batch_size], nrgs[:,batch:batch+batch_size])
+            all_preds.append(predicted_E)
+            all_refs.append(ref_energies)
+    else:
+        for batch in range(0, nrgs.shape[1], batch_size):
+            predicted_E, _, ref_energies = calc_eners_stability(etab, E_idx, seqs[:,batch:batch+batch_size], nrgs[:,batch:batch+batch_size])
+            all_preds.append(predicted_E)
+            all_refs.append(ref_energies)
 
     predicted_E = torch.cat(all_preds, dim=0)
     ref_energies = torch.cat(all_refs, dim=0) 
-    all_seqs = torch.cat(all_seqs, dim=0)
 
     # Normalize to WT
     predicted_E = predicted_E[1:] - predicted_E[0]
     ref_energies = ref_energies[1:]
-    all_seqs = all_seqs[1:]
 
     # Normalize values around 0 for pearson correlation calculation
     norm_pred = predicted_E - torch.mean(predicted_E) # n
@@ -1804,6 +1831,17 @@ def stability_loss_loop_ddg(base_etab, E_idx, data, max_tokens=20000, use_sc_mas
     
     return -pearson, data['sortcery_nrgs'].shape[1] # scalar; negate, since we want to minimize our loss function
 
+def worker_loop_ddg(etab, E_idx, data, max_tokens, return_preds=True, return_norm=False):
+    import gc
+    try:
+        _, predicted_E, ref_energies = stability_loss_loop_ddg(etab, E_idx, data, max_tokens=max_tokens, return_preds=return_preds, return_norm=return_norm, verbose=True)
+        torch.cuda.empty_cache()
+        return predicted_E, ref_energies
+    except RuntimeError as e:
+        if 'out of memory' in str(e):
+            torch.cuda.empty_cache()
+            gc.collect()
+        print(e)
 
 def setup_etab(etab, E_idx):
     b, n, k, h = etab.shape
