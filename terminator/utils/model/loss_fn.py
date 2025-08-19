@@ -1731,6 +1731,8 @@ def stability_loss_loop(base_etab, E_idx, data, max_tokens=20000, use_sc_mask=Fa
         batch_size = data['sortcery_nrgs'].shape[1]
     all_preds = []
     all_refs = []
+    seqs = data['sortcery_seqs']
+    nrgs = data['sortcery_nrgs']
     for i_batch, batch in enumerate(range(0, nrgs.shape[1], batch_size)):
         predicted_E, _, ref_energies = calc_eners_stability(etab, E_idx, seqs[:,batch:batch+batch_size], nrgs[:,batch:batch+batch_size])
         all_preds.append(predicted_E)
