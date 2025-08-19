@@ -1758,11 +1758,11 @@ def stability_loss_loop(base_etab, E_idx, data, max_tokens=20000, use_sc_mask=Fa
     
     return -pearson, data['sortcery_nrgs'].shape[1] # scalar; negate, since we want to minimize our loss function
 
-def worker_loop_ddg(etab, E_idx, data, max_tokens, progress, return_preds=True, return_norm=False):
+def worker_loop(etab, E_idx, data, max_tokens, progress, return_preds=True, return_norm=False):
     import gc
     import traceback
     try:
-        _, predicted_E, ref_energies = stability_loss_loop_ddg(etab, E_idx, data, max_tokens=max_tokens, return_preds=return_preds, return_norm=return_norm, progress=progress)
+        _, predicted_E, ref_energies = stability_loss_loop(etab, E_idx, data, max_tokens=max_tokens, return_preds=return_preds, return_norm=return_norm, progress=progress)
         torch.cuda.empty_cache()
         gc.collect()
         progress.put({'type': 'done', 'result': (predicted_E.cpu().numpy(), ref_energies.cpu().numpy())})
